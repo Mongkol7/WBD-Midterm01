@@ -5,23 +5,23 @@ const { render404Page } = require('./pages/notFound');
 const { products } = require('./data/products');
 
 function handleRoute(pathname, res) {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+
   if (pathname === '/') {
-    res.end(renderHomepage());
+    res.send(renderHomepage());
   } else if (pathname === '/products') {
-    res.end(renderProductsList(products));
+    res.send(renderProductsList(products));
   } else if (pathname.startsWith('/product/')) {
     const productId = parseInt(pathname.split('/')[2]);
     const product = products.find((p) => p.id === productId);
 
     if (product) {
-      res.end(renderProductDetails(product));
+      res.send(renderProductDetails(product));
     } else {
-      res.statusCode = 404;
-      res.end(render404Page());
+      res.status(404).send(render404Page());
     }
   } else {
-    res.statusCode = 404;
-    res.end(render404Page());
+    res.status(404).send(render404Page());
   }
 }
 

@@ -4,10 +4,18 @@ const { handleRoute } = require('./routes');
 const app = express();
 const port = process.env.PORT || 4000;
 
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 // Handle routes
-app.get('*', (req, res) => {
+app.use((req, res) => {
   handleRoute(req.path, res);
 });
 

@@ -1,13 +1,27 @@
-function renderProductsList(products) {
+function renderProductsList(products, currentPath = '/products') {
   const productCards = products
     .map(
       (product, index) => `
-    <div class="glass-card group" style="animation-delay: ${index * 0.1}s;">
-      <div class="text-6xl text-center mb-6 transform group-hover:scale-110 transition-transform duration-300">📱</div>
-      <h3 class="font-semibold text-lg mb-3 tracking-wide" style="color: #1D1D1F;">${product.name}</h3>
-      <p class="product-price text-3xl font-bold mb-3">$${product.price.toFixed(2)}</p>
-      <p class="text-sm mb-6 leading-relaxed" style="color: #86868B;">${product.description}</p>
-      <a href="/product/${product.id}" class="glass-button inline-block w-full text-center px-6 py-3 text-white no-underline rounded-xl font-medium text-sm">
+    <div class="glass-card group flex flex-col" style="animation-delay: ${
+      index * 0.1
+    }s;">
+            <div class="text-center mb-6 overflow-visible rounded-t-lg h-48">
+                <img src="${product.image}" alt="${
+        product.name
+      }" class="product-image w-full h-full object-contain transform transition-transform duration-300" />
+            </div>
+      <h3 class="font-semibold text-lg mb-3 tracking-wide" style="color: #1D1D1F;">${
+        product.name
+      }</h3>
+      <p class="product-price text-3xl font-bold mb-3">$${product.price.toFixed(
+        2
+      )}</p>
+      <p class="text-sm mb-6 leading-relaxed flex-grow" style="color: #86868B;">${
+        product.description
+      }</p>
+      <a href="/product/${
+        product.id
+      }" class="glass-button inline-block w-full text-center px-6 py-3 text-white no-underline rounded-xl font-medium text-sm">
         View Details →
       </a>
     </div>
@@ -90,6 +104,8 @@ function renderProductsList(products) {
                 -webkit-backdrop-filter: blur(25px) saturate(180%);
                 border: 1px solid rgba(0, 0, 0, 0.08);
                 border-radius: 24px;
+                /* keep card background but allow overflow so images can pop out */
+                overflow: visible;
                 padding: 2rem;
                 box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08),
                             inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
@@ -111,10 +127,21 @@ function renderProductsList(products) {
             
             .glass-card:hover {
                 transform: translateY(-8px) scale(1.02);
-                background: rgba(255, 255, 255, 0.95);
-                border-color: rgba(0, 0, 0, 0.1);
-                box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.15),
-                            inset 0 2px 2px 0 rgba(255, 255, 255, 1);
+                /* keep border accent on hover but do not change background or add shadows */
+                border-color: rgba(0, 0, 0, 0.08);
+            }
+
+            /* image pop-out effect */
+            .product-image {
+                transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+                position: relative;
+                z-index: 1;
+            }
+
+            .glass-card:hover .product-image {
+                transform: translateY(-12px) scale(1.18);
+                /* no shadow on hover per request */
+                z-index: 60;
             }
             
             .glass-button {
@@ -162,21 +189,167 @@ function renderProductsList(products) {
                 color: #1D1D1F;
             }
             
+            nav {
+                z-index: 1000 !important;
+            }
+            
             * {
                 position: relative;
                 z-index: 1;
             }
+            
+            /* Footer Styles */
+            .footer {
+                background: #f5f5f7;
+                color: #86868b;
+                font-size: 12px;
+                line-height: 1.33337;
+                font-weight: 400;
+                letter-spacing: -.01em;
+                font-family: "SF Pro Text","Myriad Set Pro","SF Pro Icons","Apple Legacy Chevron",-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+                padding: 20px 0;
+                border-top: 1px solid #d2d2d7;
+                margin: 4rem 0 0 0;
+                width: 100%;
+                position: relative;
+                left: 0;
+                right: 0;
+            }
+            
+            .footer-content {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 0 22px;
+            }
+            
+            .footer-cta {
+                padding: 17px 0 11px;
+                text-align: center;
+                border-bottom: 1px solid #d2d2d7;
+                margin-bottom: 20px;
+            }
+            
+            .footer-cta p {
+                max-width: 600px;
+                margin: 0 auto 10px;
+                font-size: 14px;
+                line-height: 1.42859;
+                color: #1d1d1f;
+            }
+            
+            .footer-cta a {
+                color: #0066cc;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            
+            .footer-cta a:hover {
+                text-decoration: underline;
+            }
+            
+            .footer-links {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .footer-column h3 {
+                font-size: 12px;
+                font-weight: 600;
+                color: #1d1d1f;
+                margin-bottom: 10px;
+                letter-spacing: 0.05em;
+            }
+            
+            .footer-column ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .footer-column li {
+                margin-bottom: 8px;
+            }
+            
+            .footer-column a {
+                color: #424245;
+                text-decoration: none;
+                font-size: 12px;
+                transition: color 0.3s ease;
+            }
+            
+            .footer-column a:hover {
+                color: #0066cc;
+                text-decoration: underline;
+            }
+            
+            .footer-base {
+                border-top: 1px solid #d2d2d7;
+                padding-top: 20px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .copyright {
+                margin-right: 30px;
+                margin-bottom: 10px;
+                font-size: 12px;
+                color: #86868b;
+            }
+            
+            .legal-links {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
+            }
+            
+            .legal-links a {
+                color: #424245;
+                text-decoration: none;
+                margin-right: 20px;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+            
+            .legal-links a:hover {
+                text-decoration: underline;
+                color: #0066cc;
+            }
+            
+            .developers {
+                width: 100%;
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #d2d2d7;
+            }
+            
+            .developers h3 {
+                font-size: 12px;
+                font-weight: 600;
+                color: #1d1d1f;
+                margin-bottom: 10px;
+            }
+            
+            .developers-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px 30px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            
+            .developers-list li {
+                color: #424245;
+                font-size: 12px;
+            }
         </style>
     </head>
     <body>
-        <nav class="glass sticky top-0 p-4 rounded-b-3xl mx-4 mt-4">
-            <div class="max-w-7xl mx-auto flex items-center justify-between">
-                <div class="flex gap-8">
-                    <a href="/" class="no-underline font-medium text-sm tracking-wide hover:scale-105 transition-transform">🏠 Home</a>
-                    <a href="/products" class="no-underline font-medium text-sm tracking-wide hover:scale-105 transition-transform">📦 Products</a>
-                </div>
-            </div>
-        </nav>
+        ${require('../components/Navbar').renderNavbar(currentPath)}
         
         <div class="max-w-7xl mx-auto px-6 py-12">
             <h1 class="page-title text-5xl font-bold mb-12 tracking-tight">Our Products</h1>
@@ -184,6 +357,8 @@ function renderProductsList(products) {
                 ${productCards}
             </div>
         </div>
+        
+        ${require('../utils/footer').renderFooter()}
     </body>
     </html>
   `;

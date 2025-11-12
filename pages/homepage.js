@@ -1,4 +1,4 @@
-function renderHomepage() {
+function renderHomepage(currentPath = '/') {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -18,6 +18,181 @@ function renderHomepage() {
             
             body {
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .content {
+                flex: 1;
+            }
+            
+            /* Apple-style Footer */
+            .footer {
+                background: #f5f5f7;
+                color: #86868b;
+                font-size: 12px;
+                line-height: 1.33337;
+                font-weight: 400;
+                letter-spacing: -.01em;
+                font-family: "SF Pro Text","Myriad Set Pro","SF Pro Icons","Apple Legacy Chevron",-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+                padding: 20px 0;
+                border-top: 1px solid #d2d2d7;
+            }
+            
+            .footer-content {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 0 22px;
+            }
+            
+            .footer-cta {
+                padding: 17px 0 11px;
+                text-align: center;
+                border-bottom: 1px solid #d2d2d7;
+                margin-bottom: 20px;
+            }
+            
+            .footer-cta p {
+                max-width: 600px;
+                margin: 0 auto 10px;
+                font-size: 14px;
+                line-height: 1.42859;
+                color: #1d1d1f;
+            }
+            
+            .footer-cta a {
+                color: #0066cc;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            
+            .footer-cta a:hover {
+                text-decoration: underline;
+            }
+            
+            .footer-links {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .footer-column h3 {
+                font-size: 12px;
+                font-weight: 600;
+                color: #1d1d1f;
+                margin-bottom: 10px;
+                letter-spacing: 0.05em;
+            }
+            
+            .footer-column ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .footer-column li {
+                margin-bottom: 8px;
+            }
+            
+            .footer-column a {
+                color: #424245;
+                text-decoration: none;
+                font-size: 12px;
+                transition: color 0.3s ease;
+            }
+            
+            .footer-column a:hover {
+                color: #0066cc;
+                text-decoration: underline;
+            }
+            
+            .footer-base {
+                border-top: 1px solid #d2d2d7;
+                padding-top: 20px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .copyright {
+                margin-right: 30px;
+                margin-bottom: 10px;
+            }
+            
+            .legal-links {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
+            }
+            
+            .legal-links a {
+                color: #424245;
+                text-decoration: none;
+                margin-right: 20px;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+            
+            .legal-links a:hover {
+                text-decoration: underline;
+                color: #0066cc;
+            }
+            
+            .developers {
+                width: 100%;
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #d2d2d7;
+            }
+            
+            .developers h3 {
+                font-size: 12px;
+                font-weight: 600;
+                color: #1d1d1f;
+                margin-bottom: 10px;
+            }
+            
+            .developers-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px 30px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            
+            .developers-list li {
+                color: #424245;
+                font-size: 12px;
+            }
+            
+            @media (max-width: 768px) {
+                .footer-links {
+                    grid-template-columns: 1fr 1fr;
+                }
+                
+                .footer-base {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                
+                .copyright {
+                    margin-bottom: 15px;
+                }
+                
+                .legal-links {
+                    flex-direction: column;
+                    width: 100%;
+                }
+                
+                .legal-links a {
+                    margin: 0 0 8px 0;
+                    display: block;
+                }
+            }
                 background: #F5F5F7;
                 min-height: 100vh;
                 position: relative;
@@ -97,6 +272,11 @@ function renderHomepage() {
                 transform: translateY(0);
             }
             
+            nav {
+                z-index: 9999 !important;
+                position: relative;
+            }
+            
             nav a {
                 position: relative;
                 transition: all 0.3s ease;
@@ -135,14 +315,7 @@ function renderHomepage() {
         </style>
     </head>
     <body>
-        <nav class="glass sticky top-0 p-4 rounded-b-3xl mx-4 mt-4">
-            <div class="max-w-7xl mx-auto flex items-center justify-between">
-                <div class="flex gap-8">
-                    <a href="/" class="no-underline font-medium text-sm tracking-wide hover:scale-105 transition-transform">🏠 Home</a>
-                    <a href="/products" class="no-underline font-medium text-sm tracking-wide hover:scale-105 transition-transform">📦 Products</a>
-                </div>
-            </div>
-        </nav>
+        ${require('../components/Navbar').renderNavbar(currentPath)}
         
         <div class="max-w-6xl mx-auto px-6 py-16">
             <div class="glass-strong p-16 text-center rounded-[32px] shadow-2xl transform hover:scale-[1.02] transition-all duration-500">
@@ -171,6 +344,11 @@ function renderHomepage() {
                 </div>
             </div>
         </div>
+        <div class="content">
+            <!-- Your existing content here -->
+        </div>
+        
+        ${require('../utils/footer').renderFooter()}
     </body>
     </html>
   `;

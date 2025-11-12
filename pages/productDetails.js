@@ -1,4 +1,4 @@
-function renderProductDetails(product) {
+function renderProductDetails(product, currentPath = '/') {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -14,6 +14,151 @@ function renderProductDetails(product) {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
+            }
+            
+            /* Footer Styles */
+            .footer {
+                background: #f5f5f7;
+                color: #86868b;
+                font-size: 12px;
+                line-height: 1.33337;
+                font-weight: 400;
+                letter-spacing: -.01em;
+                font-family: "SF Pro Text","Myriad Set Pro","SF Pro Icons","Apple Legacy Chevron",-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+                padding: 20px 0;
+                border-top: 1px solid #d2d2d7;
+                margin-top: 4rem;
+            }
+            
+            .footer-content {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 0 22px;
+            }
+            
+            .footer-cta {
+                padding: 17px 0 11px;
+                text-align: center;
+                border-bottom: 1px solid #d2d2d7;
+                margin-bottom: 20px;
+            }
+            
+            .footer-cta p {
+                max-width: 600px;
+                margin: 0 auto 10px;
+                font-size: 14px;
+                line-height: 1.42859;
+                color: #1d1d1f;
+            }
+            
+            .footer-cta a {
+                color: #0066cc;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            
+            .footer-cta a:hover {
+                text-decoration: underline;
+            }
+            
+            .footer-links {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .footer-column h3 {
+                font-size: 12px;
+                font-weight: 600;
+                color: #1d1d1f;
+                margin-bottom: 10px;
+                letter-spacing: 0.05em;
+            }
+            
+            .footer-column ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .footer-column li {
+                margin-bottom: 8px;
+            }
+            
+            .footer-column a {
+                color: #424245;
+                text-decoration: none;
+                font-size: 12px;
+                transition: color 0.3s ease;
+            }
+            
+            .footer-column a:hover {
+                color: #0066cc;
+                text-decoration: underline;
+            }
+            
+            .footer-base {
+                border-top: 1px solid #d2d2d7;
+                padding-top: 20px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .copyright {
+                margin-right: 30px;
+                margin-bottom: 10px;
+                font-size: 12px;
+                color: #86868b;
+            }
+            
+            .legal-links {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 10px;
+            }
+            
+            .legal-links a {
+                color: #424245;
+                text-decoration: none;
+                margin-right: 20px;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+            
+            .legal-links a:hover {
+                text-decoration: underline;
+                color: #0066cc;
+            }
+            
+            .developers {
+                width: 100%;
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #d2d2d7;
+            }
+            
+            .developers h3 {
+                font-size: 12px;
+                font-weight: 600;
+                color: #1d1d1f;
+                margin-bottom: 10px;
+            }
+            
+            .developers-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px 30px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            
+            .developers-list li {
+                color: #424245;
+                font-size: 12px;
             }
             
             body {
@@ -205,6 +350,10 @@ function renderProductDetails(product) {
                 color: #86868B;
             }
             
+            nav {
+                z-index: 1000 !important;
+            }
+            
             * {
                 position: relative;
                 z-index: 1;
@@ -212,25 +361,26 @@ function renderProductDetails(product) {
         </style>
     </head>
     <body>
-        <nav class="glass sticky top-0 p-4 rounded-b-3xl mx-4 mt-4">
-            <div class="max-w-7xl mx-auto flex items-center justify-between">
-                <div class="flex gap-8">
-                    <a href="/" class="no-underline font-medium text-sm tracking-wide hover:scale-105 transition-transform">🏠 Home</a>
-                    <a href="/products" class="no-underline font-medium text-sm tracking-wide hover:scale-105 transition-transform">📦 Products</a>
-                </div>
-            </div>
-        </nav>
+        ${require('../components/Navbar').renderNavbar(currentPath)}
         
         <div class="max-w-6xl mx-auto px-6 py-12">
             <div class="glass-panel p-10 grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div class="product-image-container">
-                    <div class="text-[12rem] leading-none">📱</div>
+                    <img src="${product.image}" alt="${
+    product.name
+  }" class="w-full h-auto max-w-sm object-cover rounded-lg" />
                 </div>
                 
                 <div class="flex flex-col justify-center">
-                    <h1 class="text-5xl font-bold mb-4 tracking-tight" style="color: #1D1D1F;">${product.name}</h1>
-                    <p class="price-tag text-6xl font-bold mb-6">$${product.price.toFixed(2)}</p>
-                    <p class="text-lg mb-8 leading-relaxed" style="color: #86868B;">${product.description}</p>
+                    <h1 class="text-5xl font-bold mb-4 tracking-tight" style="color: #1D1D1F;">${
+                      product.name
+                    }</h1>
+                    <p class="price-tag text-6xl font-bold mb-6">$${product.price.toFixed(
+                      2
+                    )}</p>
+                    <p class="text-lg mb-8 leading-relaxed" style="color: #86868B;">${
+                      product.description
+                    }</p>
                     
                     <div class="mb-8">
                         <h3 class="text-sm font-semibold mb-3 uppercase tracking-wider" style="color: #1D1D1F;">Features</h3>
@@ -255,7 +405,9 @@ function renderProductDetails(product) {
                     </a>
                 </div>
             </div>
+            
         </div>
+        ${require('../utils/footer').renderFooter()}
     </body>
     </html>
   `;
